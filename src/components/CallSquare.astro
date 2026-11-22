@@ -1,0 +1,77 @@
+---
+// The orange square from the «4» of the logo: always a live contact (call + Viber + Telegram).
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+interface Props { kicker: string; number: string; href: string; note?: string; rec?: string; dark?: boolean; unfold?: boolean; }
+const { kicker, number, href, note, rec, dark = false, unfold = false } = Astro.props;
+---
+<div class:list={["square", { "square--dark": dark, "square--unfold": unfold }]} data-rec={rec}>
+  <a class="square__call" href={href}>
+    <span class="square__kicker">{kicker}</span>
+    <span class="square__num num">{number}</span>
+    {note && <span class="square__note">{note}</span>}
+  </a>
+  <div class="square__msg">
+    <a href={contacts.viber.href}><Icon name="viber" />Viber</a>
+    <a href={contacts.telegram.href}><Icon name="telegram" />Telegram</a>
+  </div>
+</div>
+
+<style>
+  .square {
+    --notch-bg: var(--color-bg);
+    position: relative; isolation: isolate; overflow: hidden;
+    background: var(--color-accent); color: var(--color-on-accent);
+    display: grid; grid-template-rows: 1fr auto; container-type: inline-size;
+  }
+  .square--dark { --notch-bg: var(--color-text); }
+  .square::after { /* cut corner, as in the logo «4» */
+    content: ""; position: absolute; top: 0; right: 0; width: var(--notch); height: var(--notch); background: var(--notch-bg); z-index: 2;
+  }
+  .square__call {
+    position: relative; display: grid; gap: var(--s1); align-content: start; padding: var(--s2);
+    text-decoration: none; color: inherit; z-index: 0; outline-offset: -6px;
+    transition: color var(--dur-fast) var(--ease-out), transform 100ms var(--ease-out);
+  }
+  .square__call::before { /* effect 4: black fill rises from below */
+    content: ""; position: absolute; inset: 0; z-index: -1; background: var(--color-text);
+    transform: scaleY(0); transform-origin: 50% 100%; transition: transform 250ms var(--ease-out);
+  }
+  .square__call:hover, .square__call:focus-visible { color: var(--color-accent); }
+  .square__call:hover::before, .square__call:focus-visible::before { transform: scaleY(1); }
+  .square__call:focus-visible { outline: 3px solid var(--color-text); }
+  .square--dark .square__call:focus-visible { outline-color: var(--color-bg); }
+  .square__call:active { transform: scale(.99); }
+  .square__kicker { font-weight: 600; font-size: var(--fs-body); }
+  .square__num { font-family: var(--font-display); font-weight: 700; font-size: min(2.5rem, 8.4cqi); line-height: 1.05; letter-spacing: -0.02em; white-space: nowrap; }
+  .square__note { display: none; font-size: var(--fs-body); max-width: 18rem; }
+  .square__msg { position: relative; z-index: 1; display: flex; border-top: 2px solid var(--color-text); }
+  .square__msg a {
+    flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: var(--s1); min-height: var(--tap);
+    font-weight: 600; text-decoration: none; color: var(--color-text); background: var(--color-accent);
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .square__msg a + a { border-left: 2px solid var(--color-text); }
+  .square__msg a:hover { background: var(--color-text); color: var(--color-accent); }
+  .square__msg a:focus-visible { outline: 3px solid var(--color-text); outline-offset: -5px; }
+  .square__msg :global(svg) { width: 20px; height: 20px; }
+
+  /* effect 1: the square unfolds from its top-right corner; on the phone the strip opens left to right */
+  :global(.js) .square--unfold { animation: strip-in 400ms var(--ease-out); }
+  @keyframes square-in { from { clip-path: inset(0 0 100% 100%); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes strip-in { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+  @media (min-width: 900px) {
+    .square { aspect-ratio: 1 / 1; }
+    :global(.js) .square--unfold { animation: square-in 600ms var(--ease-out); }
+    .square__call { padding: min(var(--s4), 7cqi) min(var(--s4), 7cqi) var(--s3); align-content: end; }
+    .square__kicker { font-size: var(--fs-lg); }
+    .square__note { display: block; }
+    .square__msg a { min-height: 56px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .square--unfold { animation: none; }
+    .square__call::before { transition: none; }
+    .square__call:active { transform: none; }
+  }
+</style>

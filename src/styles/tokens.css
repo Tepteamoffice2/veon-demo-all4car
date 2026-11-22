@@ -1,0 +1,54 @@
+/* Hallmark · shape: asymmetric offer + search | live-contact square · genre: editorial · theme: custom · job: buy · idea: "All 4 Car — все ДЛЯ: помаранчевий квадрат «4» звертає кожен розділ до свого покупця і веде до живого менеджера" · vibe: "точний, прямий, харківський, без зайвого"
+ * paper: light #FFFFFF · accent: #F85A00 · display: Unbounded · body: Jost · hero: H1 і поле «Артикул або VIN» зліва, помаранчевий квадрат дзвінка справа; на 390 квадрат стає смугою · nav: logo, 5 anchors, phone as text, square call button; 390 burger + bottom contact bar · footer: logo, contacts, legal FutureLinks · imagery: the product (client's own product photos) · signature: orange square from the logo that says «для вас» on every screen and is always a button to a live manager
+ * axes: light/grotesk-extended/chromatic-orange · surface: absolute · posture: restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: imagery (no photos of the shop), carried by type, the square and real product photos */
+/* Hallmark · waive 7b · concept.md §5 Look: фон #FFFFFF · approved concept: white field of the client's brand, prices and part numbers read on white */
+/* Hallmark · waive 23 · hero square ~16% of 1280x800 · the orange square is the concept signature (concept.md §4, §5) and the only accent on the first screen; elsewhere accent stays in markers and contact buttons */
+/* Hallmark · answer 41 · #B54100 is the link colour on white/surface only (--color-link-ink), never text on accent; text on accent is --color-on-accent #1F1F1E, 5.07:1 */
+/* Client design tokens: from design/concept.md (veon-concept: colors, fonts). */
+:root {
+  /* colour */
+  --color-bg: #FFFFFF;
+  --color-surface: #EFEFEC;
+  --color-text: #1F1F1E;
+  --color-muted: #5E5E5B;
+  --color-accent: #F85A00;
+  --color-link-ink: #B54100;
+  --color-border: #8A8A85;
+  --color-line: #D9D9D5;
+  --color-on-dark-muted: #B5B5B0;
+  --color-accent-ink: #1F1F1E; /* text on accent, 5.07:1 */
+  --color-on-accent: var(--color-accent-ink);
+  --color-on-dark: #FFFFFF;
+
+  /* type */
+  --font-display: "Unbounded", "Unbounded Fallback", system-ui, sans-serif;
+  --font-body: "Jost", "Jost Fallback", system-ui, sans-serif;
+  --fs-sm: 0.875rem;                                   /* 14 */
+  --fs-body: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem); /* 16 → 17 */
+  --fs-lg: clamp(1.25rem, 1.18rem + 0.3vw, 1.375rem);  /* 20 → 22 */
+  --fs-xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);     /* 26 → 36 */
+  --fs-section: clamp(1.625rem, 0.95rem + 2.6vw, 3rem); /* 26 → 48 */
+  --fs-xxl: clamp(1.75rem, 1.05rem + 2.9vw, 3.5rem);   /* 28 → 56 */
+  --lh-text: 1.55;
+  --lh-head: 1.1;
+
+  /* space: step 8 */
+  --s1: 0.5rem; --s2: 1rem; --s3: 1.5rem; --s4: 2rem; --s5: 2.5rem; --s6: 3rem; --s8: 4rem; --s10: 5rem; --s15: 7.5rem;
+  --section-y: clamp(4rem, 2.6rem + 5.6vw, 8.75rem);
+  --space: clamp(1.25rem, 0.6rem + 2.2vw, 2.5rem);     /* page gutter 20 → 40 */
+  --gap: 1.5rem;
+  --container: 1280px;
+  --radius: 0;
+  --header-h: 72px;
+  --notch: 22px;
+  --tap: 48px;
+
+  /* motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur: 600ms;
+  --dur-fast: 200ms;
+}
+@media (max-width: 767px) {
+  :root { --header-h: 64px; --notch: 14px; }
+}

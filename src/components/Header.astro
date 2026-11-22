@@ -1,0 +1,171 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { nav, contacts, address, schedule, NOTE_FUTURE } from "../data/site";
+---
+<header class="hdr" data-header>
+  <div class="container hdr__bar">
+    <a class="hdr__logo" href="#top" data-rec="U-R014" aria-label="All4Car — на початок сторінки">
+      <img src="/img/all4car-logo.png" alt="All4Car" width="290" height="48" fetchpriority="high" />
+    </a>
+
+    <nav class="hdr__nav" aria-label="Розділи головної">
+      <ul>
+        {nav.map((n) => <li><a href={n.href} data-nav>{n.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="hdr__util">
+      <FutureLink note={NOTE_FUTURE} class="hdr__future future-link--end">Кошик</FutureLink>
+      <FutureLink note={NOTE_FUTURE} class="hdr__future future-link--end">Увійти</FutureLink>
+      <span data-rec="U-R009"><FutureLink note="Російська версія — у розробці" class="hdr__future future-link--end" >RU</FutureLink></span>
+    </div>
+
+    <a class="hdr__phone num" href={contacts.phoneMain.href}>{contacts.phoneMain.label}</a>
+    <a class="btn btn--call hdr__call" href={contacts.phoneMain.href} data-rec="U-R002">
+      <Icon name="phone" /><span>Дзвінок</span>
+    </a>
+
+    <button class="hdr__burger" type="button" aria-expanded="false" aria-controls="menu" data-burger>
+      <Icon name="menu" class="i-open" /><Icon name="close" class="i-close" />
+      <span class="visually-hidden">Меню</span>
+    </button>
+  </div>
+
+  <div class="menu" id="menu" data-menu hidden>
+    <div class="container menu__inner">
+      <nav aria-label="Меню">
+        <ul class="menu__nav">
+          {nav.map((n) => <li><a href={n.href} data-menu-link>{n.label}</a></li>)}
+        </ul>
+      </nav>
+      <div class="menu__contacts">
+        <a class="menu__tel num" href={contacts.phoneMain.href}>{contacts.phoneMain.label}</a>
+        <a class="link" href={contacts.email.href}>{contacts.email.label}</a>
+        <p>{address.full}</p>
+        <p class="menu__hours">{schedule.slice(0, 2).map((s) => <span>{s.days} {s.hours}</span>)}</p>
+      </div>
+      <div class="menu__future">
+        <FutureLink note={NOTE_FUTURE} class="future-link--start future-link--up text-future">Кошик</FutureLink>
+        <FutureLink note={NOTE_FUTURE} class="future-link--start future-link--up text-future">Увійти</FutureLink>
+        <FutureLink note="Російська версія — у розробці" class="future-link--start future-link--up text-future">RU</FutureLink>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .hdr { position: sticky; top: 0; z-index: 50; background: var(--color-bg); border-bottom: 1px solid var(--color-line); }
+  .hdr__bar { display: flex; align-items: center; gap: var(--s3); height: var(--header-h); }
+  .hdr__logo { flex: none; display: block; padding-block: 8px; }
+  .hdr__logo img { width: 150px; height: auto; }
+  .hdr__nav { margin-left: auto; }
+  .hdr__nav ul { display: flex; gap: var(--s3); }
+  @media (max-width: 1279px) { .hdr__nav ul { gap: var(--s2); } }
+  .hdr__nav a {
+    position: relative; display: inline-flex; align-items: center; min-height: var(--tap);
+    font-weight: 500; text-decoration: none; padding-left: 16px; white-space: nowrap;
+  }
+  .hdr__nav a::before {
+    content: ""; position: absolute; left: 0; top: 50%; width: 8px; height: 8px; margin-top: -4px;
+    background: var(--color-accent); transform: scale(0); transform-origin: 0 100%;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .hdr__nav a:hover::before { transform: scale(.6); }
+  .hdr__nav a.is-active::before, .hdr__nav a[aria-current="true"]::before { transform: scale(1); }
+  .hdr__util { display: flex; gap: var(--s2); padding-left: var(--s3); border-left: 1px solid var(--color-line); }
+  .hdr__util :global(.hdr__future) { min-height: var(--tap); font-size: var(--fs-sm); font-weight: 500; color: var(--color-text); text-decoration: underline dotted 1px; text-underline-offset: 4px; }
+  .hdr__phone { font-family: var(--font-display); font-weight: 600; font-size: 1rem; text-decoration: none; white-space: nowrap; min-height: var(--tap); display: inline-flex; align-items: center; }
+  .hdr__phone:hover { color: var(--color-link-ink); }
+  .hdr__call { padding-inline: 1rem; }
+  .hdr__burger {
+    display: none; width: var(--tap); height: var(--tap); align-items: center; justify-content: center;
+    border: 2px solid var(--color-text); background: var(--color-bg); cursor: pointer; padding: 0;
+  }
+  .hdr__burger :global(svg) { width: 24px; height: 24px; }
+  .hdr__burger :global(.i-close), .hdr__burger[aria-expanded="true"] :global(.i-open) { display: none; }
+  .hdr__burger[aria-expanded="true"] :global(.i-close) { display: block; }
+
+  .menu { position: fixed; inset: var(--header-h) 0 0 0; background: var(--color-bg); overflow-y: auto; border-top: 1px solid var(--color-line); }
+  .menu[hidden] { display: none; }
+  .menu__inner { display: grid; gap: var(--s5); padding-block: var(--s4) var(--s10); }
+  .menu__nav a {
+    display: flex; align-items: center; min-height: 56px; border-bottom: 1px solid var(--color-line);
+    font-family: var(--font-display); font-weight: 600; font-size: var(--fs-lg); text-decoration: none;
+  }
+  .menu__contacts { display: grid; gap: var(--s1); }
+  .menu__tel { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); text-decoration: none; min-height: var(--tap); display: inline-flex; align-items: center; }
+  .menu__hours { display: flex; gap: var(--s2); color: var(--color-muted); }
+  .menu__future { display: flex; gap: var(--s3); color: var(--color-muted); }
+  .menu__future :global(.future-link) { min-height: var(--tap); }
+
+  @media (max-width: 1379px) {
+    .hdr__util { display: none; }
+  }
+  @media (max-width: 1099px) {
+    .hdr__nav, .hdr__phone { display: none; }
+    .hdr__call { margin-left: auto; }
+    :global(.js) .hdr__burger { display: inline-flex; }
+  }
+  @media (max-width: 767px) {
+    .hdr__call { display: none; }
+    .hdr__burger { margin-left: auto; }
+  }
+  @media (max-width: 400px) {
+    .hdr__bar { gap: var(--s1); }
+    .hdr__logo img { width: 128px; }
+    .hdr__call { padding-inline: .75rem; }
+  }
+  @media (max-width: 340px) {
+    .hdr__logo img { width: 112px; }
+    .hdr__call span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  }
+</style>
+
+<script>
+  const burger = document.querySelector<HTMLButtonElement>("[data-burger]");
+  const menu = document.querySelector<HTMLElement>("[data-menu]");
+  if (burger && menu) {
+    const focusables = () => Array.from(document.querySelectorAll<HTMLElement>(
+      "[data-header] a[href], [data-header] button, [data-menu] [tabindex='0']"
+    )).filter((el) => el.offsetParent !== null);
+    const close = (focusBurger = true) => {
+      menu.hidden = true; burger.setAttribute("aria-expanded", "false");
+      document.body.style.overflow = "";
+      if (focusBurger) burger.focus();
+    };
+    const open = () => {
+      menu.hidden = false; burger.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+      menu.querySelector<HTMLElement>("a")?.focus();
+    };
+    burger.addEventListener("click", () => (menu.hidden ? open() : close()));
+    menu.querySelectorAll("[data-menu-link]").forEach((a) => a.addEventListener("click", () => close(false)));
+    document.addEventListener("keydown", (e) => {
+      if (menu.hidden) return;
+      if (e.key === "Escape") { close(); return; }
+      if (e.key === "Tab") {
+        const list = focusables(); if (!list.length) return;
+        const first = list[0], last = list[list.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    window.matchMedia("(min-width: 1100px)").addEventListener("change", (m) => { if (m.matches && !menu.hidden) close(false); });
+  }
+
+  // Active anchor: the small square before the menu item («ви тут»).
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-nav]"));
+  const targets = links.map((a) => document.querySelector<HTMLElement>(a.getAttribute("href") || "")).filter(Boolean) as HTMLElement[];
+  if ("IntersectionObserver" in window && targets.length) {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        links.forEach((a) => a.classList.toggle("is-active", a.getAttribute("href") === `#${e.target.id}`));
+      }
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    targets.forEach((t) => io.observe(t));
+    const hero = document.getElementById("hero");
+    if (hero) new IntersectionObserver(([e]) => { if (e.isIntersecting) links.forEach((a) => a.classList.remove("is-active")); }, { rootMargin: "-45% 0px -50% 0px" }).observe(hero);
+  }
+</script>

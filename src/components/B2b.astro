@@ -1,0 +1,36 @@
+---
+import CallSquare from "./CallSquare.astro";
+import { contacts } from "../data/site";
+---
+<section id="b2b" class="sec b2b on-dark" data-rec="U-R011" aria-labelledby="b2b-title">
+  <div class="container b2b__grid">
+    <div class="b2b__main">
+      <header class="sec-head">
+        <h2 class="sec-title" id="b2b-title"><span class="mark" data-reveal aria-hidden="true"></span>Для СТО, магазинів та інтернет-магазинів</h2>
+        <p class="sec-lead">Для професійних покупців діють спеціальні умови. Обговорюємо їх індивідуально з корпоративним відділом.</p>
+      </header>
+      <ul class="b2b__list">
+        <li><span class="b2b__k">Асортимент</span><span>Оригінал і аналоги, каталоги для 24 марок, мотозапчастини, авто зі США</span></li>
+        <li><span class="b2b__k">Підбір</span><span>За артикулом, брендом, назвою або VIN-кодом</span></li>
+        <li><span class="b2b__k">Відправка</span><span>Новою Поштою в день замовлення: замовлення до 15:00, оплата до 16:00</span></li>
+      </ul>
+    </div>
+    <div class="b2b__side">
+      <CallSquare kicker="Корпоративний відділ" number={contacts.phoneCorp.short} href={contacts.phoneCorp.href}
+        note="Умови для СТО і магазинів — за телефоном або в месенджері" dark />
+    </div>
+  </div>
+</section>
+
+<style>
+  .b2b { background: var(--color-text); color: var(--color-on-dark); }
+  .b2b__grid { display: grid; gap: var(--s6); grid-template-columns: minmax(0, 1fr); }
+  .b2b__list { display: grid; border-top: 1px solid var(--color-on-dark-muted); }
+  .b2b__list li { display: grid; gap: var(--s1); padding-block: var(--s3); border-bottom: 1px solid var(--color-on-dark-muted); font-size: var(--fs-lg); line-height: 1.4; }
+  .b2b__k { font-size: var(--fs-sm); color: var(--color-on-dark-muted); }
+  @media (min-width: 900px) {
+    .b2b__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); column-gap: var(--s10); align-items: start; }
+    .b2b__list li { grid-template-columns: 10rem minmax(0, 1fr); align-items: baseline; }
+    .b2b__side { padding-top: var(--s2); }
+  }
+</style>

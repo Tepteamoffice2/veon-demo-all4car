@@ -1,0 +1,9 @@
+---
+// H2 of a section with the hanging «для» square (effect 2 via the data-reveal hook).
+interface Props { id: string; title: string; lead?: string; }
+const { id, title, lead } = Astro.props;
+---
+<header class="sec-head">
+  <h2 class="sec-title" id={`${id}-title`}><span class="mark" data-reveal aria-hidden="true"></span>{title}</h2>
+  {lead && <p class="sec-lead">{lead}</p>}
+</header>

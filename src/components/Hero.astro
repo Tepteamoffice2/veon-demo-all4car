@@ -1,0 +1,127 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import CallSquare from "./CallSquare.astro";
+import { contacts, NOTE_SEARCH } from "../data/site";
+const H1 = "Автозапчастини для іномарок у Харкові: оригінал, аналоги, підбір за VIN";
+---
+<section id="hero" class="hero" data-rec="U-R001,G-R003,M-R004" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__main">
+      <h1 id="hero-title" class="hero__title" data-rec="SEO-R002">{H1}</h1>
+      <p class="hero__lead">Знайдемо деталь за артикулом, маркою чи VIN-кодом. Заберіть її на Гольдбергівській, 9 або отримайте Новою Поштою: замовлення до 15:00 відправляємо того ж дня.</p>
+
+      <div class="search" role="search" aria-label="Пошук запчастин" data-search data-rec="U-R002">
+        <label class="search__label" for="q">Артикул або VIN</label>
+        <div class="search__row">
+          <input class="search__input" id="q" name="q" type="text" inputmode="text" autocomplete="off" spellcheck="false"
+            placeholder="Наприклад, 48069‑33070" aria-describedby="q-hint" maxlength="40" />
+          <FutureLink note={NOTE_SEARCH} class="btn search__btn future-link--end">Знайти</FutureLink>
+        </div>
+        <div class="search__hint" id="q-hint" aria-live="polite">
+          <p data-hint-text>Пошук запрацює у повній версії сайту. Наявність і ціну назве менеджер за телефоном.</p>
+          <div class="search__vin" data-hint-vin hidden>
+            <a class="btn btn--line btn--sm" href={contacts.viber.href}><Icon name="viber" />Viber</a>
+            <a class="btn btn--line btn--sm" href={contacts.telegram.href}><Icon name="telegram" />Telegram</a>
+            <a class="btn btn--line btn--sm" href={contacts.phoneMain.href}><Icon name="phone" />Подзвонити</a>
+          </div>
+        </div>
+      </div>
+
+      <ul class="hero__facts">
+        <li><span class="hero__fact-label">Самовивіз</span><span>Харків, Гольдбергівська, 9</span></li>
+        <li><span class="hero__fact-label">Нова Пошта</span><span>відправка в день замовлення</span></li>
+        <li><span class="hero__fact-label">Графік</span><span>Пн–Пт 9–17, Сб 10–14</span></li>
+      </ul>
+    </div>
+
+    <aside class="hero__side" aria-label="Зв'язок з менеджером">
+      <CallSquare kicker="Подзвонити менеджеру" number={contacts.phoneMain.short} href={contacts.phoneMain.href}
+        note="Перевіримо наявність і підберемо аналог" rec="U-R002" unfold />
+      <a class="hero__vin link" href="#pidbir">Підберемо деталь за VIN</a>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: clamp(2rem, 1rem + 4vw, 5rem) clamp(3rem, 2rem + 4vw, 6.5rem); }
+  .hero__grid { display: grid; gap: var(--s5); grid-template-columns: minmax(0, 1fr); }
+  .hero__main { display: grid; gap: var(--s4); align-content: start; min-width: 0; }
+  .hero__title { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.25rem, 6.4vw, 3rem); line-height: 1.08; letter-spacing: -0.02em; max-width: 15.5em; text-wrap: balance; }
+  .hero__lead { font-size: var(--fs-lg); line-height: 1.45; color: var(--color-muted); max-width: 36rem; }
+
+  .search { display: grid; gap: var(--s1); max-width: 44rem; min-width: 0; }
+  .search__label { font-weight: 600; }
+  .search__row { display: flex; gap: 0; }
+  .search__input {
+    flex: 1; min-width: 0; width: 100%; height: 52px; padding: 0 1rem; border: 2px solid var(--color-border); border-right: 0;
+    border-radius: var(--radius); background: var(--color-bg); color: var(--color-text);
+    font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter-spacing: .02em;
+    transition: border-color var(--dur-fast) var(--ease-out);
+  }
+  .search__input::placeholder { color: var(--color-muted); font-family: var(--font-body); font-weight: 400; font-size: var(--fs-body); letter-spacing: 0; }
+  .search__input:hover { border-color: var(--color-text); }
+  .search__input:focus-visible { outline: 3px solid var(--color-text); outline-offset: 2px; border-color: var(--color-text); }
+  .search :global(.search__btn) { height: 52px; padding-inline: 1.5rem; border-width: 2px; }
+  .search__hint { min-height: 3rem; display: grid; gap: var(--s2); font-size: var(--fs-sm); color: var(--color-muted); }
+  .search__vin { display: flex; flex-wrap: wrap; gap: var(--s1); }
+  .search__vin[hidden] { display: none; }
+  :global(.btn--sm) { min-height: 44px; padding: .5rem .9rem; font-size: var(--fs-sm); }
+
+  .hero__facts { display: grid; gap: var(--s2); padding-top: var(--s3); border-top: 1px solid var(--color-line); }
+  .hero__facts li { display: grid; gap: 2px; }
+  .hero__fact-label { font-size: var(--fs-sm); color: var(--color-muted); }
+  .hero__facts li span:last-child { font-weight: 500; }
+
+  .hero__side { display: grid; gap: var(--s2); align-content: start; }
+  .hero__vin { justify-self: start; min-height: var(--tap); display: inline-flex; align-items: center; }
+
+  @media (max-width: 899px) {
+    .hero__main { display: contents; }
+    .hero__grid { gap: var(--s3); }
+    .hero__title { order: -3; }
+    .hero__lead { order: -2; }
+    .search { order: -1; }
+    .hero__facts { order: 2; }
+    .hero__side { order: 1; }
+  }
+  @media (min-width: 600px) and (max-width: 899px) {
+    .hero__facts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (min-width: 900px) {
+    .hero__grid { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); column-gap: var(--gap); align-items: start; }
+    .hero__side { padding-top: var(--s1); }
+    .hero__title { font-size: clamp(2.25rem, 0.6rem + 3.4vw, 3.5rem); }
+    .hero__facts { grid-template-columns: repeat(3, minmax(0, auto)); column-gap: var(--s5); justify-content: start; }
+  }
+  @media (max-width: 599px) {
+    .hero__lead { font-size: var(--fs-body); }
+  }
+</style>
+
+<script>
+  // Format helper of the search field: an honest local check, no fake results.
+  const box = document.querySelector<HTMLElement>("[data-search]");
+  const input = box?.querySelector<HTMLInputElement>("input");
+  const text = box?.querySelector<HTMLElement>("[data-hint-text]");
+  const vin = box?.querySelector<HTMLElement>("[data-hint-vin]");
+  if (box && input && text && vin) {
+    const base = text.textContent || "";
+    const VIN = /^[A-HJ-NPR-Z0-9]{17}$/;
+    const update = () => {
+      const v = input.value.replace(/\s+/g, "").toUpperCase();
+      if (VIN.test(v)) {
+        text.textContent = "Схоже на VIN. Надішліть його менеджеру: підберемо деталь і надішлемо ціни.";
+        vin.hidden = false;
+      } else if (v.length >= 4) {
+        text.textContent = "Схоже на артикул. Пошук запрацює у повній версії сайту, а наявність уточнимо телефоном.";
+        vin.hidden = true;
+      } else {
+        text.textContent = base;
+        vin.hidden = true;
+      }
+    };
+    input.addEventListener("input", update);
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); update(); } });
+  }
+</script>

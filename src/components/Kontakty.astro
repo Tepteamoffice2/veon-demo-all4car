@@ -1,0 +1,92 @@
+---
+import SectionHead from "./SectionHead.astro";
+import Icon from "./Icon.astro";
+import { address, schedule, contacts } from "../data/site";
+---
+<section id="kontakty" class="sec kontakty" aria-labelledby="kontakty-title">
+  <div class="container">
+    <SectionHead id="kontakty" title="Для зв'язку й самовивозу" />
+
+    <div class="kt__grid">
+      <div class="kt__place" data-rec="U-R004">
+        <p class="kt__addr">{address.city},<br />{address.street}</p>
+        <p class="kt__status" data-open-status hidden></p>
+        <table class="kt__table">
+          <caption class="visually-hidden">Графік роботи точки видачі</caption>
+          <tbody>
+            {schedule.map((s) => (<tr><th scope="row">{s.days}</th><td class="num">{s.hours}</td></tr>))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="kt__ways">
+        <h3 class="kt__h">Зв'язатися</h3>
+        <ul class="kt__list">
+          <li>
+            <span class="kt__k">Замовлення і підбір</span>
+            <a class="kt__v num" href={contacts.phoneMain.href}>{contacts.phoneMain.label}</a>
+          </li>
+          <li>
+            <span class="kt__k">Корпоративним клієнтам, Viber і Telegram</span>
+            <a class="kt__v num" href={contacts.phoneCorp.href}>{contacts.phoneCorp.label}</a>
+          </li>
+          <li>
+            <span class="kt__k">E-mail</span>
+            <a class="kt__v" href={contacts.email.href}>{contacts.email.label}</a>
+          </li>
+        </ul>
+        <div class="kt__actions">
+          <a class="btn btn--call" href={contacts.phoneMain.href}><Icon name="phone" />Подзвонити</a>
+          <a class="btn btn--line" href={contacts.viber.href}><Icon name="viber" />Viber</a>
+          <a class="btn btn--line" href={contacts.telegram.href}><Icon name="telegram" />Telegram</a>
+          <a class="btn btn--line" href={contacts.email.href}><Icon name="mail" />Написати</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kt__grid { display: grid; gap: var(--s8); grid-template-columns: minmax(0, 1fr); }
+  .kt__place { display: grid; gap: var(--s3); align-content: start; }
+  .kt__addr { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xxl); line-height: 1.05; letter-spacing: -0.02em; }
+  .kt__status { justify-self: start; padding: .35rem .75rem; border: 2px solid var(--color-text); font-weight: 600; font-size: var(--fs-sm); }
+  .kt__status.is-open { background: var(--color-text); color: var(--color-bg); }
+  .kt__table { border-collapse: collapse; width: 100%; max-width: 26rem; }
+  .kt__table th, .kt__table td { padding: var(--s1) 0; border-bottom: 1px solid var(--color-line); text-align: left; font-size: var(--fs-lg); }
+  .kt__table th { font-weight: 400; color: var(--color-muted); width: 6rem; }
+  .kt__table td { font-weight: 600; }
+  .kt__ways { display: grid; gap: var(--s3); align-content: start; }
+  .kt__h { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-lg); }
+  .kt__list { display: grid; border-top: 2px solid var(--color-text); }
+  .kt__list li { display: grid; gap: 2px; padding-block: var(--s2); border-bottom: 1px solid var(--color-line); }
+  .kt__k { font-size: var(--fs-sm); color: var(--color-muted); }
+  .kt__v { justify-self: start; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-lg); text-decoration: none; overflow-wrap: anywhere; min-height: 32px; }
+  .kt__v:hover { color: var(--color-link-ink); text-decoration: underline; text-underline-offset: 4px; }
+  .kt__actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s1); max-width: 30rem; }
+  @media (max-width: 339px) {
+    .kt__actions { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (min-width: 900px) {
+    .kt__grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--gap); }
+  }
+</style>
+
+<script>
+  // «Відчинено зараз»: local check against the schedule, Europe/Kyiv time.
+  const el = document.querySelector<HTMLElement>("[data-open-status]");
+  if (el) {
+    try {
+      const parts = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Kyiv", weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
+      const get = (t: string) => parts.find((p) => p.type === t)?.value || "";
+      const day = get("weekday");
+      const mins = Number(get("hour")) * 60 + Number(get("minute"));
+      const hours: Record<string, [number, number]> = { Mon: [540, 1020], Tue: [540, 1020], Wed: [540, 1020], Thu: [540, 1020], Fri: [540, 1020], Sat: [600, 840] };
+      const h = hours[day];
+      const open = !!h && mins >= h[0] && mins < h[1];
+      el.textContent = open ? `Зараз відчинено, до ${day === "Sat" ? "14:00" : "17:00"}` : "Зараз зачинено";
+      el.classList.toggle("is-open", open);
+      el.hidden = false;
+    } catch { /* no Intl time zones: the schedule table stays */ }
+  }
+</script>

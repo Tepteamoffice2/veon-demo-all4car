@@ -1,0 +1,79 @@
+---
+import SectionHead from "./SectionHead.astro";
+import FutureLink from "./FutureLink.astro";
+import { address, schedule, NOTE_FUTURE } from "../data/site";
+---
+<section id="umovy" class="sec umovy" data-rec="U-R006" aria-labelledby="umovy-title">
+  <div class="container">
+    <SectionHead id="umovy" title="Для Харкова й для всієї України" />
+
+    <div class="um__grid">
+      <article class="um__card um__pickup">
+        <h3 class="um__h">Самовивіз у Харкові</h3>
+        <p class="um__addr">{address.street}</p>
+        <dl class="um__hours">
+          {schedule.map((s) => (<div><dt>{s.days}</dt><dd class="num">{s.hours}</dd></div>))}
+        </dl>
+      </article>
+
+      <article class="um__card um__np">
+        <h3 class="um__h">Нова Пошта по Україні</h3>
+        <p class="um__big num" aria-hidden="true">15:00</p>
+        <p class="um__np-text">Замовлення до 15:00 і підтверджена оплата до 16:00 — відправимо того ж дня у відділення або поштомат. Доставка по Україні — протягом 2 днів.</p>
+      </article>
+    </div>
+
+    <div class="um__row">
+      <article class="um__pay">
+        <h3 class="um__h">Оплата</h3>
+        <p>Післяплата Новою Поштою: комісію перевізника за переказ коштів, <strong class="num">20 грн + 2 %</strong> від суми, сплачує покупець. Інші способи оплати підкаже менеджер під час замовлення.</p>
+      </article>
+
+      <article class="um__trust" data-rec="U-R010">
+        <h3 class="um__h">Умови покупки</h3>
+        <ul class="um__list">
+          <li>Сертифікати якості на всю продукцію</li>
+          <li><span>Знижка 3 % після <FutureLink note={NOTE_FUTURE} class="text-future future-link--start">реєстрації</FutureLink></span></li>
+          <li>Перевірений партнер маркетплейсу Avto.pro</li>
+          <li class="um__docs">
+            <FutureLink note={NOTE_FUTURE} class="text-future future-link--start">Гарантія і повернення</FutureLink>
+            <FutureLink note={NOTE_FUTURE} class="text-future future-link--start">Договір оферти</FutureLink>
+          </li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .umovy { background: var(--color-surface); }
+  .um__grid { display: grid; gap: var(--gap); grid-template-columns: minmax(0, 1fr); }
+  .um__card { display: grid; gap: var(--s2); align-content: start; padding: var(--s4); background: var(--color-bg); }
+  .um__h { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-lg); line-height: 1.2; }
+  .um__addr { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-xl); line-height: 1.15; letter-spacing: -0.01em; }
+  .um__hours { display: grid; gap: var(--s1); padding-top: var(--s2); border-top: 1px solid var(--color-line); }
+  .um__hours div { display: flex; justify-content: space-between; gap: var(--s2); }
+  .um__hours dt { color: var(--color-muted); }
+  .um__hours dd { font-weight: 600; }
+  .um__big { font-family: var(--font-display); font-weight: 700; font-size: clamp(4rem, 2rem + 9vw, 9.5rem); line-height: .9; letter-spacing: -0.04em; color: var(--color-text); }
+  .um__np-text { font-size: var(--fs-lg); line-height: 1.45; max-width: 34rem; }
+
+  .um__row { display: grid; gap: var(--s5); grid-template-columns: minmax(0, 1fr); margin-top: var(--s8); }
+  .um__pay, .um__trust { display: grid; gap: var(--s2); align-content: start; }
+  .um__pay p { font-size: var(--fs-lg); line-height: 1.45; max-width: 36rem; }
+  .um__pay strong { font-weight: 600; background: var(--color-bg); padding: 0 .25em; white-space: nowrap; }
+  .um__list { display: grid; border-top: 2px solid var(--color-text); }
+  .um__list li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1) var(--s3); min-height: var(--tap); padding-block: var(--s1); border-bottom: 1px solid var(--color-border); }
+  .um__list :global(.future-link) { min-height: 32px; font-weight: 500; }
+
+  @media (min-width: 900px) {
+    .um__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+    .um__card { padding: var(--s5); }
+    .um__row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--gap); }
+    .um__row > * { padding-inline: var(--s5) 0; }
+    .um__row > :first-child { padding-inline: 0; }
+  }
+  @media (max-width: 599px) {
+    .um__card { padding: var(--s3); }
+  }
+</style>

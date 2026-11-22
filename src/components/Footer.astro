@@ -1,0 +1,65 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { contacts, address, NOTE_FUTURE } from "../data/site";
+---
+<footer class="ft">
+  <div class="container ft__grid">
+    <div class="ft__brand">
+      <a class="ft__logo" href="#top" aria-label="All4Car — на початок сторінки">
+        <img src="/img/all4car-logo.png" alt="All4Car" width="290" height="48" decoding="async" />
+      </a>
+      <p class="ft__about">Автозапчастини для іномарок: оригінал і аналоги. {address.full}.</p>
+    </div>
+
+    <div class="ft__col">
+      <p class="ft__h">Контакти</p>
+      <ul>
+        <li><a href={contacts.phoneMain.href} class="num">{contacts.phoneMain.label}</a></li>
+        <li><a href={contacts.phoneCorp.href} class="num">{contacts.phoneCorp.label}</a></li>
+        <li><a href={contacts.email.href}>{contacts.email.label}</a></li>
+        <li class="ft__msg"><a href={contacts.viber.href}>Viber</a><a href={contacts.telegram.href}>Telegram</a></li>
+      </ul>
+    </div>
+
+    <div class="ft__col">
+      <p class="ft__h">Покупцям</p>
+      <ul>
+        <li><FutureLink note={NOTE_FUTURE} class="future-link--start future-link--up">Гарантія і повернення</FutureLink></li>
+        <li><FutureLink note={NOTE_FUTURE} class="future-link--start future-link--up">Договір оферти</FutureLink></li>
+        <li><FutureLink note={NOTE_FUTURE} class="future-link--start future-link--up">Політика конфіденційності</FutureLink></li>
+        <li><FutureLink note={NOTE_FUTURE} class="future-link--start future-link--up">Угода користувача</FutureLink></li>
+      </ul>
+    </div>
+
+    <div class="ft__col">
+      <p class="ft__h">Ще</p>
+      <ul>
+        <li data-rec="U-R005"><FutureLink note={NOTE_FUTURE} class="future-link--start future-link--up">Новини</FutureLink></li>
+        <li><FutureLink note={NOTE_FUTURE} class="future-link--start future-link--up">Веб-застосунок</FutureLink></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container ft__base">
+    <p>© All4Car</p>
+    <p>Перевірений партнер Avto.pro</p>
+  </div>
+</footer>
+
+<style>
+  .ft { border-top: 2px solid var(--color-text); padding-block: var(--s8) var(--s4); }
+  .ft__grid { display: grid; gap: var(--s5); grid-template-columns: minmax(0, 1fr); }
+  .ft__logo { display: inline-block; padding-block: var(--s1); }
+  .ft__logo img { width: 150px; height: auto; }
+  .ft__about { color: var(--color-muted); max-width: 22rem; margin-top: var(--s1); }
+  .ft__h { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body); margin-bottom: var(--s1); }
+  .ft__col ul { display: grid; }
+  .ft__col li { min-height: 40px; display: flex; align-items: center; }
+  .ft__col a { white-space: nowrap; text-decoration: none; min-height: 40px; display: inline-flex; align-items: center; }
+  .ft__col a:hover { color: var(--color-link-ink); text-decoration: underline; text-underline-offset: 4px; }
+  .ft__col :global(.future-link) { min-height: 40px; color: var(--color-muted); text-decoration: underline dotted 1px; text-underline-offset: 4px; }
+  .ft__msg { gap: var(--s3); }
+  .ft__base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s2); margin-top: var(--s6); padding-top: var(--s3); border-top: 1px solid var(--color-line); color: var(--color-muted); font-size: var(--fs-sm); }
+  @media (min-width: 768px) {
+    .ft__grid { grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)); }
+  }
+</style>

@@ -1,0 +1,89 @@
+---
+import SectionHead from "./SectionHead.astro";
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { brands, catalogGroups, contacts, NOTE_FUTURE } from "../data/site";
+const FIRST = 12;
+---
+<section id="katalogy" class="sec katalogy" data-rec="U-R008" aria-labelledby="katalogy-title">
+  <div class="container">
+    <SectionHead id="katalogy" title="Для вашої марки — і не тільки легкової" />
+
+    <div class="kat__grid">
+      <ul class="kat__groups">
+        {catalogGroups.map((g) => (
+          <li class="kat__group">
+            <h3 class="kat__group-title">{g.title}</h3>
+            <p class="kat__group-text">{g.text}</p>
+            <FutureLink note={NOTE_FUTURE} class="text-future kat__open future-link--start">Відкрити каталог</FutureLink>
+          </li>
+        ))}
+      </ul>
+
+      <div class="kat__brands">
+        <h3 class="kat__brands-title">Оригінальні каталоги за маркою</h3>
+        <ul class="kat__index" id="brand-index" data-brands>
+          {brands.map((b, i) => (
+            <li class:list={{ "is-extra": i >= FIRST }}>
+              <FutureLink note={NOTE_FUTURE} class={`kat__brand ${i % 6 === 5 ? "future-link--end" : "future-link--start"}`}>{b}</FutureLink>
+            </li>
+          ))}
+        </ul>
+        <button class="btn btn--line kat__more" type="button" aria-expanded="false" aria-controls="brand-index" data-brands-toggle>Усі 24 марки</button>
+      </div>
+    </div>
+
+    <p class="kat__help">
+      <span>Не знайшли свій розділ? Підкажемо телефоном.</span>
+      <a class="btn btn--line" href={contacts.phoneMain.href}><Icon name="phone" />{contacts.phoneMain.label}</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .kat__grid { display: grid; gap: var(--s8); grid-template-columns: minmax(0, 1fr); }
+  .kat__groups { border-top: 2px solid var(--color-text); }
+  .kat__group { display: grid; gap: var(--s1); padding-block: var(--s3); border-bottom: 1px solid var(--color-line); }
+  .kat__group-title { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-lg); line-height: 1.2; }
+  .kat__group-text { color: var(--color-muted); }
+  .kat__group :global(.kat__open) { justify-self: start; min-height: 32px; font-weight: 500; }
+
+  .kat__brands { display: grid; gap: var(--s3); align-content: start; }
+  .kat__brands-title { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body); color: var(--color-muted); }
+  .kat__index { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); }
+  .kat__index :global(.kat__brand) {
+    min-height: var(--tap); font-family: var(--font-display); font-weight: 500; font-size: var(--fs-xl); line-height: 1.15;
+    letter-spacing: -0.01em; color: var(--color-text);
+    text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: transparent; text-underline-offset: 6px;
+    transition: text-decoration-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .kat__index :global(.kat__brand:hover), .kat__index :global(.kat__brand:focus-visible) { text-decoration-color: var(--color-text); }
+  .kat__more { display: none; justify-self: start; }
+
+  .kat__help { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3); margin-top: var(--s8); font-size: var(--fs-lg); }
+
+  @media (min-width: 900px) {
+    .kat__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--s10); }
+    .kat__brands { padding-top: var(--s3); }
+  }
+  @media (max-width: 767px) {
+    .kat__index :global(.kat__brand) { font-size: var(--fs-lg); }
+    .kat__index { gap: 0 var(--s2); }
+    :global(.js) .kat__more { display: inline-flex; }
+    :global(.js) .kat__index:not(.is-open) .is-extra { display: none; }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>("[data-brands-toggle]");
+  const list = document.querySelector<HTMLElement>("[data-brands]");
+  if (btn && list) {
+    btn.addEventListener("click", () => {
+      const open = !list.classList.contains("is-open");
+      list.classList.toggle("is-open", open);
+      btn.setAttribute("aria-expanded", String(open));
+      btn.textContent = open ? "Згорнути список" : "Усі 24 марки";
+      if (open) list.querySelectorAll<HTMLElement>(".is-extra [tabindex]")[0]?.focus();
+    });
+  }
+</script>

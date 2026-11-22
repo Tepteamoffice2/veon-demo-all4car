@@ -1,0 +1,31 @@
+---
+// Fixed contact bar for phones (ux/demo-home.md §6): always in the thumb zone.
+import Icon from "./Icon.astro";
+import { contacts } from "../data/site";
+---
+<nav class="mbar" aria-label="Швидкий зв'язок" data-rec="U-R002">
+  <a class="mbar__call" href={contacts.phoneMain.href}><Icon name="phone" />Подзвонити</a>
+  <a href={contacts.viber.href}><Icon name="viber" />Viber</a>
+  <a href={contacts.telegram.href}><Icon name="telegram" />Telegram</a>
+</nav>
+
+<style>
+  .mbar { display: none; }
+  @media (max-width: 767px) {
+    .mbar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+      background: var(--color-bg); border-top: 2px solid var(--color-text); padding-bottom: env(safe-area-inset-bottom);
+    }
+    .mbar a {
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--s1); min-height: 56px;
+      font-weight: 600; text-decoration: none; color: var(--color-text);
+      transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    }
+    .mbar a + a { border-left: 1px solid var(--color-line); }
+    .mbar a:focus-visible { outline-offset: -4px; }
+    .mbar .mbar__call { background: var(--color-accent); color: var(--color-on-accent); }
+    .mbar a:active { background: var(--color-text); color: var(--color-accent); }
+    .mbar :global(svg) { width: 20px; height: 20px; }
+    :global(body) { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+  }
+</style>

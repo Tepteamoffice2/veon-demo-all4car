@@ -1,0 +1,43 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Pidbir from "../components/Pidbir.astro";
+import Katalogy from "../components/Katalogy.astro";
+import Vitryna from "../components/Vitryna.astro";
+import Umovy from "../components/Umovy.astro";
+import B2b from "../components/B2b.astro";
+import Kontakty from "../components/Kontakty.astro";
+import Footer from "../components/Footer.astro";
+import MobileBar from "../components/MobileBar.astro";
+
+const title = "Автозапчастини для іномарок у Харкові — All4Car";
+const description = "Оригінальні запчастини й аналоги для іномарок: підбір за VIN і артикулом, самовивіз на Гольдбергівській, 9, відправка Новою Поштою в день замовлення.";
+
+// JSON-LD from veon/client.json (company.contacts); no url, rating or sameAs (concept.md §8, SEO).
+const ld = {
+  "@context": "https://schema.org",
+  "@type": "AutoPartsStore",
+  name: "All4Car",
+  telephone: ["+380673115518", "+380673115519"],
+  email: "sales@all4car.com.ua",
+  address: { "@type": "PostalAddress", streetAddress: "вул. Гольдбергівська, 9", addressLocality: "Харків", addressCountry: "UA" },
+  openingHoursSpecification: [
+    { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "17:00" },
+    { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "10:00", closes: "14:00" },
+  ],
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <Header slot="header" />
+  <Hero />
+  <Pidbir />
+  <Katalogy />
+  <Vitryna />
+  <Umovy />
+  <B2b />
+  <Kontakty />
+  <Footer slot="footer" />
+  <MobileBar slot="footer" />
+</Base>

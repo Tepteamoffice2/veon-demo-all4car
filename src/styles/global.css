@@ -1,0 +1,119 @@
+/* Technical base (reset, accessibility, reveal hook) + All4Car shared styles. Colours and fonts only via tokens. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html, body { overflow-x: clip; }
+body {
+  margin: 0; background: var(--color-bg); color: var(--color-text);
+  font-family: var(--font-body); font-size: var(--fs-body); line-height: var(--lh-text);
+  text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
+  font-variant-numeric: lining-nums;
+}
+img, video, svg { display: block; max-width: 100%; height: auto; }
+h1, h2, h3 { overflow-wrap: break-word; min-width: 0; text-wrap: balance; margin: 0; }
+p { text-wrap: pretty; margin: 0; }
+ul, ol, dl, dd { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+::selection { background: var(--color-accent); color: var(--color-on-accent); }
+html { scrollbar-color: var(--color-border) var(--color-surface); }
+:focus-visible { outline: 3px solid var(--color-text); outline-offset: 2px; transition: none; }
+.on-dark :focus-visible { outline-color: var(--color-accent); }
+.skip-link { position: absolute; left: 1rem; top: -100px; z-index: 100; padding: .75rem 1rem; background: var(--color-text); color: var(--color-bg); }
+.skip-link:focus { top: 1rem; }
+.container { width: min(100% - 2 * var(--space), var(--container)); margin-inline: auto; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.num { font-variant-numeric: tabular-nums lining-nums; }
+
+/* Reveal-on-scroll hook (src/scripts/reveal.ts). Hidden only once scripting runs (.js on <html>). */
+[data-reveal] { transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); transition-delay: var(--reveal-delay, 0ms); }
+.js [data-reveal]:not(.is-visible) { opacity: 0; transform: translateY(24px); }
+[id] { scroll-margin-top: var(--header-h, 0px); }
+
+/* ---------- Section head: the «для» square hangs in the margin before every H2 ---------- */
+.sec { padding-block: var(--section-y); }
+.sec-head { display: grid; gap: var(--s2); margin-bottom: var(--s6); max-width: 52rem; }
+.sec-title {
+  position: relative; font-family: var(--font-display); font-weight: 700;
+  font-size: var(--fs-section); line-height: var(--lh-head); letter-spacing: -0.015em; text-wrap: balance;
+  padding-left: calc(0.62em + var(--s2));
+}
+.mark {
+  position: absolute; left: 0; top: 0.2em; width: 0.62em; height: 0.62em;
+  background: var(--color-accent); transform-origin: 0 100%;
+}
+@media (min-width: 1360px) {
+  .sec-title { padding-left: 0; }
+  .mark { left: calc(-0.62em - var(--s3)); }
+}
+/* effect 2: the marker unfolds from its bottom-left corner when the heading enters the viewport */
+[data-reveal].mark { transition: transform 350ms var(--ease-out); }
+.js [data-reveal].mark:not(.is-visible) { opacity: 1; transform: scale(0); }
+.sec-lead { color: var(--color-muted); max-width: 40rem; font-size: var(--fs-lg); line-height: 1.45; }
+.on-dark .sec-lead { color: var(--color-on-dark-muted); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s1);
+  min-height: var(--tap); padding: 0.75rem 1.25rem;
+  border: 2px solid var(--color-text); border-radius: var(--radius);
+  font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body); line-height: 1.2;
+  text-decoration: none; cursor: pointer; background: transparent; color: var(--color-text);
+  transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out), transform 100ms var(--ease-out);
+}
+.btn svg { flex: none; width: 1.25em; height: 1.25em; }
+.btn--line:hover { background: var(--color-text); color: var(--color-bg); }
+.btn--line:active, .btn--call:active { transform: scale(.98); }
+.on-dark .btn--line { border-color: var(--color-on-dark); color: var(--color-on-dark); }
+.on-dark .btn--line:hover { background: var(--color-on-dark); color: var(--color-text); }
+
+/* primary: live contact. Orange fill, black text, cut corner like the «4»; effect 4: black fill rises from below */
+.btn--call { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+.btn--call::before {
+  content: ""; position: absolute; inset: -2px; z-index: -1; background: var(--color-text);
+  transform: scaleY(0); transform-origin: 50% 100%; transition: transform var(--dur-fast) var(--ease-out);
+}
+.btn--call::after {
+  content: ""; position: absolute; top: -2px; right: -2px; width: 10px; height: 10px;
+  background: var(--notch-bg, var(--color-bg));
+}
+.btn--call:hover, .btn--call:focus-visible { color: var(--color-accent); }
+.btn--call:hover::before, .btn--call:focus-visible::before { transform: scaleY(1); }
+.on-dark .btn--call { --notch-bg: var(--color-text); }
+.on-dark .btn--call::before { background: var(--color-bg); }
+.on-dark .btn--call:hover, .on-dark .btn--call:focus-visible { color: var(--color-text); }
+
+/* ---------- FutureLink: an outlined, orange-free element with a short note ---------- */
+.future-link { position: relative; display: inline-flex; align-items: center; cursor: help; }
+.future-link__note[aria-hidden="true"] {
+  position: absolute; left: 50%; top: calc(100% + .5rem); transform: translate(-50%, -4px);
+  white-space: nowrap; padding: .4rem .65rem; font-family: var(--font-body); font-weight: 500;
+  font-size: var(--fs-sm); line-height: 1.2; letter-spacing: 0; text-transform: none;
+  background: var(--color-text); color: var(--color-bg); border-radius: var(--radius);
+  opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out); z-index: 30;
+}
+.future-link:hover .future-link__note, .future-link:focus-visible .future-link__note { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+.future-link--start .future-link__note[aria-hidden="true"] { left: 0; transform: translate(0, -4px); }
+.future-link--start:hover .future-link__note, .future-link--start:focus-visible .future-link__note { transform: translate(0, 0); }
+.future-link--end .future-link__note[aria-hidden="true"] { left: auto; right: 0; transform: translate(0, -4px); }
+.future-link--end:hover .future-link__note, .future-link--end:focus-visible .future-link__note { transform: translate(0, 0); }
+.future-link--up .future-link__note[aria-hidden="true"] { top: auto; bottom: calc(100% + .5rem); }
+.on-dark .future-link__note[aria-hidden="true"] { background: var(--color-bg); color: var(--color-text); }
+button:disabled, [aria-disabled="true"] { cursor: help; }
+.btn.future-link { cursor: help; overflow: visible; border-style: dashed; color: var(--color-text); }
+.btn.future-link:hover { background: var(--color-surface); }
+.text-future { text-decoration: underline dotted 1px; text-underline-offset: 4px; color: inherit; }
+.text-future:hover { text-decoration-style: solid; }
+
+/* ---------- Plain text link ---------- */
+.link { color: var(--color-link-ink); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; transition: text-decoration-thickness var(--dur-fast) var(--ease-out); }
+.link:hover { text-decoration-thickness: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .js [data-reveal]:not(.is-visible) { opacity: 1; transform: none; }
+  .js [data-reveal].mark:not(.is-visible) { transform: none; }
+  .btn:active { transform: none; }
+}
