@@ -2,6 +2,9 @@
 import "../styles/tokens.css";
 import "../styles/fonts.css";
 import "../styles/global.css";
+import unboundedCyr from "../assets/fonts/unbounded-cyrillic.woff2?url";
+const B = import.meta.env.BASE_URL;
+const base = B.endsWith("/") ? B : B + "/";
 
 interface Props { lang: string; title: string; description: string; canonical?: string; }
 const { lang, title, description, canonical } = Astro.props;
@@ -21,9 +24,9 @@ const { lang, title, description, canonical } = Astro.props;
     <meta property="og:description" content={description} />
     <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#FFFFFF" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preload" href="/fonts/unbounded-cyrillic.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" type="image/png" sizes="32x32" href={`${base}favicon-32x32.png`} />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
+    <link rel="preload" href={unboundedCyr} as="font" type="font/woff2" crossorigin />
     <slot name="head" />
     <style is:global>
       html, body { overflow-x: clip; }

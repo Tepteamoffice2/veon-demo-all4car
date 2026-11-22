@@ -1,12 +1,14 @@
 ---
 import FutureLink from "./FutureLink.astro";
 import { contacts, address, NOTE_FUTURE } from "../data/site";
+const B = import.meta.env.BASE_URL;
+const logoSrc = (B.endsWith("/") ? B : B + "/") + "img/all4car-logo.png";
 ---
 <footer class="ft">
   <div class="container ft__grid">
     <div class="ft__brand">
       <a class="ft__logo" href="#top" aria-label="All4Car — на початок сторінки">
-        <img src="/img/all4car-logo.png" alt="All4Car" width="290" height="48" decoding="async" />
+        <img src={logoSrc} alt="All4Car" width="290" height="48" decoding="async" />
       </a>
       <p class="ft__about">Автозапчастини для іномарок: оригінал і аналоги. {address.full}.</p>
     </div>

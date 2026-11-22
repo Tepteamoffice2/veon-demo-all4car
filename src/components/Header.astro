@@ -2,11 +2,13 @@
 import FutureLink from "./FutureLink.astro";
 import Icon from "./Icon.astro";
 import { nav, contacts, address, schedule, NOTE_FUTURE } from "../data/site";
+const B = import.meta.env.BASE_URL;
+const logoSrc = (B.endsWith("/") ? B : B + "/") + "img/all4car-logo.png";
 ---
 <header class="hdr" data-header>
   <div class="container hdr__bar">
     <a class="hdr__logo" href="#top" data-rec="U-R014" aria-label="All4Car — на початок сторінки">
-      <img src="/img/all4car-logo.png" alt="All4Car" width="290" height="48" fetchpriority="high" />
+      <img src={logoSrc} alt="All4Car" width="290" height="48" fetchpriority="high" />
     </a>
 
     <nav class="hdr__nav" aria-label="Розділи головної">
